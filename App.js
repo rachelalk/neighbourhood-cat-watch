@@ -8,7 +8,8 @@ export default function App() {
   return (
 		<View style={styles.container}>
 			<NavBar />
-      <AppButton text={'Add Cat'}/>
+			<Text style={{ color: "#993955", fontSize: '20%', padding: '5%'}}>Find and rate cats in your area!</Text>
+			<AppButton text={"Add Cat"} />
 			<StatusBar style="auto" />
 		</View>
 	);
