@@ -12,6 +12,7 @@ const AppButton = ({text, onPress}) => {
 				height: "6%",
 				borderRadius: "15%",
 				backgroundColor: "#993955",
+                marginTop: '140%',
 			}}
 		>
 			<Button
