@@ -1,14 +1,14 @@
 import MapView from "react-native-maps";
 import { StyleSheet, View } from "react-native";
 
-const ViewMap = () => {
+const ViewMap = ({lat, long}) => {
 	return (
 		<View style={styles.container}>
 			<MapView
 				style={styles.map}
 				region={{
-					latitude: 37.78825,
-					longitude: -122.4324,
+					latitude: lat,
+					longitude: long,
 					latitudeDelta: 0.015,
 					longitudeDelta: 0.0121,
 				}}
