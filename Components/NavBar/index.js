@@ -9,7 +9,7 @@ const NavBar = () => {
 				flexDirection: "row",
 				justifyContent: "center",
 				alignItems: "center",
-				marginTop: "15%",
+				// marginTop: "15%",
 				position: "fixed",
 				width: "100%",
 				height: "6%",

@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
 	container: {
 		...StyleSheet.absoluteFillObject,
 		display: "flex",
-		marginTop: "45%",
+		marginTop: "30%",
 		marginLeft: "5%",
-		height: "60%",
+		height: "65%",
 		width: "90%",
 		justifyContent: "flex-end",
 		alignItems: "center",

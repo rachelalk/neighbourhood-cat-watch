@@ -5,12 +5,8 @@ import AppButton from "./Components/Button";
 import ViewMap from "./Components/Map";
 import { useState, useEffect } from "react";
 import * as Location from "expo-location";
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
-function HomeScreen({navigation}) {
+function HomeScreen() {
 	const [location, setLocation] = useState(null);
 	const [errorMsg, setErrorMsg] = useState(null);
 	const [lat, setLat] = useState("37.78825");
@@ -45,38 +41,16 @@ function HomeScreen({navigation}) {
 		console.log("no data");
 	}
 
-	
-		return (
-			<View style={styles.container}>
-				<NavBar style={{ height: "60%", width: "90%" }} />
-				<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
-					Find and rate cats in your area!
-				</Text>
-				<ViewMap lat={lat} long={long}></ViewMap>
-				<AppButton text={"Add Cat"} onPress={() => navigation.navigate('AddCat')}/>
-				<StatusBar style="auto" />
-			</View>
-		);
-	}
-
-	function AddCatScreen() {
-		return (
-			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-				<Text>Add Cat Screen</Text>
-			</View>
-		);
-	}
-
-	const Stack = createNativeStackNavigator();
-
-	function App() {
 	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen name="Home" component={HomeScreen} />
-				<Stack.Screen name="AddCat" component={AddCatScreen} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		<View style={styles.container}>
+			<NavBar style={{ height: "60%", width: "90%" }} />
+			<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
+				Find and rate cats in your area!
+			</Text>
+			<ViewMap lat={lat} long={long}></ViewMap>
+			<AppButton text={"Add Cat"} />
+			<StatusBar style="auto" />
+		</View>
 	);
 }
 
@@ -92,4 +66,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default App;
+export default HomeScreen;
