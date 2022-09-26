@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Platform } from "react-native";
+import {
+	StyleSheet,
+	Text,
+	View,
+	TextInput,
+	Button,
+	Pressable,
+} from "react-native";
 import NavBar from "./Components/NavBar";
 import AppButton from "./Components/Button";
 import ViewMap from "./Components/Map";
@@ -7,10 +14,10 @@ import { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import NewButton from "./Components/NewButton";
 
-
-function HomeScreen({navigation}) {
+function HomeScreen({ navigation }) {
 	const [location, setLocation] = useState(null);
 	const [errorMsg, setErrorMsg] = useState(null);
 	const [lat, setLat] = useState("37.78825");
@@ -45,35 +52,49 @@ function HomeScreen({navigation}) {
 		console.log("no data");
 	}
 
-	
-		return (
-			<View style={styles.container}>
-				<NavBar style={styles.navBar}i980 />
-				<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
-					Find and rate cats in your area!
-				</Text>
-				<ViewMap lat={lat} long={long}></ViewMap>
-				<AppButton
-					text={"Add Cat"}
-					onPress={() => navigation.navigate("AddCat")}
-				/>
-				<StatusBar style="auto" />
-			</View>
-		);
-	}
+	return (
+		<View style={styles.container}>
+			<NavBar style={styles.navBar} i980 />
+			<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
+				Find and rate cats in your area!
+			</Text>
+			<ViewMap lat={lat} long={long}></ViewMap>
+			<AppButton
+				text={"Add Cat"}
+				onPress={() => navigation.navigate("AddCat")}
+			/>
+			<StatusBar style="auto" />
+		</View>
+	);
+}
 
-	function AddCatScreen() {
-		return (
-			<View style={styles.container}>
-				<NavBar style={styles.navBar} />
-				<Text>Add Cat Screen</Text>
-			</View>
-		);
-	}
+function AddCatScreen() {
+	const [comment, setComment] = useState("");
+	console.log(comment);
+	return (
+		<View style={styles.container}>
+			<NavBar style={styles.navBar} />
+			<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
+				Rate the cat that you have spotted:
+			</Text>
+			<Text style={styles.options}>Friendliness:</Text>
+			<Text style={styles.options}>Friendliness:</Text>
+			<Text style={styles.options}>Comments (optional):</Text>
+			<TextInput
+				style={styles.input}
+				placeholder="Type here"
+				value={comment}
+				onChangeText={setComment}
+			></TextInput>
+			<NewButton text={"Upload Photo"}></NewButton>
+			<NewButton text={"Add Cat"}></NewButton>
+		</View>
+	);
+}
 
-	const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
-	function App() {
+function App() {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>
@@ -94,9 +115,23 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	navBar: {
-		height: "60%", width: "90%",
-	}
+		height: "60%",
+		width: "90%",
+	},
+	options: {
+		color: "#993955",
+		fontSize: "20%",
+		padding: "5%",
+		alignSelf: "left",
+	},
+	input: {
+		height: "20%",
+		border: "solid",
+		borderColor: "#993955",
+		borderWidth: "1%",
+		width: "90%",
+		borderRadius: "15%",
+	},
 });
-
 
 export default App;
