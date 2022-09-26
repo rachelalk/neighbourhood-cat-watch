@@ -48,12 +48,15 @@ function HomeScreen({navigation}) {
 	
 		return (
 			<View style={styles.container}>
-				<NavBar style={{ height: "60%", width: "90%" }} />
+				<NavBar style={styles.navBar}i980 />
 				<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
 					Find and rate cats in your area!
 				</Text>
 				<ViewMap lat={lat} long={long}></ViewMap>
-				<AppButton text={"Add Cat"} onPress={() => navigation.navigate('AddCat')}/>
+				<AppButton
+					text={"Add Cat"}
+					onPress={() => navigation.navigate("AddCat")}
+				/>
 				<StatusBar style="auto" />
 			</View>
 		);
@@ -61,7 +64,8 @@ function HomeScreen({navigation}) {
 
 	function AddCatScreen() {
 		return (
-			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+			<View style={styles.container}>
+				<NavBar style={styles.navBar} />
 				<Text>Add Cat Screen</Text>
 			</View>
 		);
@@ -89,6 +93,9 @@ const styles = StyleSheet.create({
 		backgroundColor: "#E9ECF5",
 		alignItems: "center",
 	},
+	navBar: {
+		height: "60%", width: "90%",
+	}
 });
 
 
