@@ -16,6 +16,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NewButton from "./Components/NewButton";
+import CatRating from "./Components/Rating";
 
 function HomeScreen({ navigation }) {
 	const [location, setLocation] = useState(null);
@@ -70,16 +71,25 @@ function HomeScreen({ navigation }) {
 
 function AddCatScreen() {
 	const [comment, setComment] = useState("");
-	console.log(comment);
+	const [friendliness, setFriendliness] = useState(0)
+	const [cuteness, setCuteness] = useState(0);
+
+
 	return (
 		<View style={styles.container}>
 			<NavBar style={styles.navBar} />
 			<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
 				Rate the cat that you have spotted:
 			</Text>
-			<Text style={styles.options}>Friendliness:</Text>
-			<Text style={styles.options}>Friendliness:</Text>
-			<Text style={styles.options}>Comments (optional):</Text>
+			<View style={styles.wrapper}>
+				<Text style={styles.options}>Friendliness:</Text>
+				<CatRating rating={setFriendliness}></CatRating>
+			</View>
+			<View style={styles.wrapper}> 
+			<Text style={styles.options}>Cuteness:</Text>
+			<CatRating rating={setCuteness}></CatRating>
+			</View>
+			<Text style={styles.comment}>Comments (optional):</Text>
 			<TextInput
 				style={styles.input}
 				placeholder="Type here"
@@ -121,7 +131,6 @@ const styles = StyleSheet.create({
 	options: {
 		color: "#993955",
 		fontSize: "20%",
-		padding: "5%",
 		alignSelf: "left",
 	},
 	input: {
@@ -131,6 +140,21 @@ const styles = StyleSheet.create({
 		borderWidth: "1%",
 		width: "90%",
 		borderRadius: "15%",
+	},
+	wrapper: {
+		borderColor: "#993955",
+		borderWidth: "1%",
+		width: "90%",
+		borderRadius: "15%",
+		marginBottom: "5%",
+		padding: "5%",
+	},
+	comment: {
+		color: "#993955",
+		fontSize: "20%",
+		alignSelf: "left",
+		marginLeft: "8%",
+		marginBottom: "2%",
 	},
 });
 
