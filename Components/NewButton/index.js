@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 		height: "6%",
 		borderRadius: "15%",
 		backgroundColor: "#993955",
-		marginTop: "5%",
+		marginTop: "2%",
 	},
 	text: {
 		color: "#CCD6EB",

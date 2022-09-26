@@ -5,7 +5,8 @@ import {
 	View,
 	TextInput,
 	Button,
-	Image
+	Image,
+	ScrollView
 
 } from "react-native";
 import NavBar from "./Components/NavBar";
@@ -102,32 +103,34 @@ function AddCatScreen() {
 
 
 	return (
-		<View style={styles.container}>
-			<NavBar style={styles.navBar} />
-			<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
-				Rate the cat that you have spotted:
-			</Text>
-			<View style={styles.wrapper}>
-				<Text style={styles.options}>Friendliness:</Text>
-				<CatRating rating={setFriendliness}></CatRating>
+
+			<View style={styles.container}>
+				<NavBar style={styles.navBar} />
+				<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
+					Rate the cat that you have spotted:
+				</Text>
+				<View style={styles.wrapper}>
+					<Text style={styles.options}>Friendliness:</Text>
+					<CatRating rating={setFriendliness}></CatRating>
+				</View>
+				<View style={styles.wrapper}>
+					<Text style={styles.options}>Cuteness:</Text>
+					<CatRating rating={setCuteness}></CatRating>
+				</View>
+				<Text style={styles.comment}>Comments (optional):</Text>
+				<TextInput
+					style={styles.input}
+					placeholder="Type here"
+					value={comment}
+					onChangeText={setComment}
+				></TextInput>
+				<NewButton text={"Upload Photo"} onPress={pickImage}></NewButton>
+				{image && (
+					<Image source={{ uri: image }} style={{ width: 100, height: 100, marginTop: "2%" }} />
+				)}
+				<NewButton text={"Submit Cat"}></NewButton>
 			</View>
-			<View style={styles.wrapper}>
-				<Text style={styles.options}>Cuteness:</Text>
-				<CatRating rating={setCuteness}></CatRating>
-			</View>
-			<Text style={styles.comment}>Comments (optional):</Text>
-			<TextInput
-				style={styles.input}
-				placeholder="Type here"
-				value={comment}
-				onChangeText={setComment}
-			></TextInput>
-			<NewButton text={"Upload Photo"} onPress={pickImage}></NewButton>
-			{image && (
-				<Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-			)}
-			<NewButton text={"Add Cat"}></NewButton>
-		</View>
+
 	);
 }
 
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
 		alignSelf: "left",
 	},
 	input: {
-		height: "20%",
+		height: "10%",
 		border: "solid",
 		borderColor: "#993955",
 		borderWidth: "1%",

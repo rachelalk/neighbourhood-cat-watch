@@ -17,7 +17,7 @@ const NavBar = () => {
 				top: "0",
 			}}
 		>
-			<Image source={require("./catIcon.png")}></Image>
+			<Image source={require("./catIcon.png")} style={{height: 40, resizeMode: "contain"}}></Image>
 			<Text
 				style={{
 					fontFamily: "American Typewriter",
