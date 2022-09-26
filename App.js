@@ -5,7 +5,8 @@ import {
 	View,
 	TextInput,
 	Button,
-	Pressable,
+	Image
+
 } from "react-native";
 import NavBar from "./Components/NavBar";
 import AppButton from "./Components/Button";
@@ -17,6 +18,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NewButton from "./Components/NewButton";
 import CatRating from "./Components/Rating";
+
+
+
+import * as ImagePicker from "expo-image-picker";
+
+
 
 function HomeScreen({ navigation }) {
 	const [location, setLocation] = useState(null);
@@ -62,7 +69,7 @@ function HomeScreen({ navigation }) {
 			<ViewMap lat={lat} long={long}></ViewMap>
 			<AppButton
 				text={"Add Cat"}
-				onPress={() => navigation.navigate("AddCat")}
+				onPress={() => navigation.navigate("Add Cat")}
 			/>
 			<StatusBar style="auto" />
 		</View>
@@ -73,6 +80,25 @@ function AddCatScreen() {
 	const [comment, setComment] = useState("");
 	const [friendliness, setFriendliness] = useState(0)
 	const [cuteness, setCuteness] = useState(0);
+	const [image, setImage] = useState(null);
+
+		const pickImage = async () => {
+			// No permissions request is necessary for launching the image library
+			let result = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.All,
+				allowsEditing: true,
+				aspect: [4, 3],
+				quality: 1,
+			});
+
+			console.log(result);
+
+			if (!result.cancelled) {
+				setImage(result.uri);
+			}
+		};
+
+		console.log(image)
 
 
 	return (
@@ -85,9 +111,9 @@ function AddCatScreen() {
 				<Text style={styles.options}>Friendliness:</Text>
 				<CatRating rating={setFriendliness}></CatRating>
 			</View>
-			<View style={styles.wrapper}> 
-			<Text style={styles.options}>Cuteness:</Text>
-			<CatRating rating={setCuteness}></CatRating>
+			<View style={styles.wrapper}>
+				<Text style={styles.options}>Cuteness:</Text>
+				<CatRating rating={setCuteness}></CatRating>
 			</View>
 			<Text style={styles.comment}>Comments (optional):</Text>
 			<TextInput
@@ -96,7 +122,10 @@ function AddCatScreen() {
 				value={comment}
 				onChangeText={setComment}
 			></TextInput>
-			<NewButton text={"Upload Photo"}></NewButton>
+			<NewButton text={"Upload Photo"} onPress={pickImage}></NewButton>
+			{image && (
+				<Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+			)}
 			<NewButton text={"Add Cat"}></NewButton>
 		</View>
 	);
@@ -109,7 +138,7 @@ function App() {
 		<NavigationContainer>
 			<Stack.Navigator>
 				<Stack.Screen name="Home" component={HomeScreen} />
-				<Stack.Screen name="AddCat" component={AddCatScreen} />
+				<Stack.Screen name="Add Cat" component={AddCatScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
