@@ -14,7 +14,7 @@ const NavBar = () => {
 				width: "100%",
 				height: "6%",
 				backgroundColor: "#993955",
-				top: "0",
+				top: "0px",
 			}}
 		>
 			<Image source={require("./catIcon.png")} style={{height: 40, resizeMode: "contain"}}></Image>
