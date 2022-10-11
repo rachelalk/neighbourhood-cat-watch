@@ -1,7 +1,9 @@
 import MapView from "react-native-maps";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
+import { Marker, Callout } from "react-native-maps";
 
-const ViewMap = ({lat, long}) => {
+
+const ViewMap = ({ lat, long, markerLat, markerLong }) => {
 	return (
 		<View style={styles.container}>
 			<MapView
@@ -12,7 +14,15 @@ const ViewMap = ({lat, long}) => {
 					latitudeDelta: 0.015,
 					longitudeDelta: 0.0121,
 				}}
-			></MapView>
+			>
+				<Marker coordinate={{ latitude: markerLat, longitude: markerLong }}>
+					<Callout>
+						<View>
+							<Text>This is a cat test</Text>
+						</View>
+					</Callout>
+				</Marker>
+			</MapView>
 		</View>
 	);
 };
@@ -29,7 +39,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		border: "solid",
 		borderColor: "#993955",
-        borderWidth: '2%',
+		borderWidth: "2%",
 	},
 	map: {
 		...StyleSheet.absoluteFillObject,

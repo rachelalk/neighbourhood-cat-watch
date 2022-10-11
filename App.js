@@ -29,8 +29,12 @@ import * as ImagePicker from "expo-image-picker";
 function HomeScreen({ navigation }) {
 	const [location, setLocation] = useState(null);
 	const [errorMsg, setErrorMsg] = useState(null);
-	const [lat, setLat] = useState("37.78825");
-	const [long, setLong] = useState("-122.4324");
+	const [lat, setLat] = useState(37.78825);
+	const [long, setLong] = useState(-122.4324);
+	const [marker, setMarker] = useState({
+		markerLat: 53.437957,
+		markerLong: -2.213814,
+	});
 
 	useEffect(() => {
 		(async () => {
@@ -61,13 +65,23 @@ function HomeScreen({ navigation }) {
 		console.log("no data");
 	}
 
+	console.log(marker);
+	console.log(marker.markerLat)
+	console.log(marker.markerlong);
+
+
 	return (
 		<View style={styles.container}>
 			<NavBar style={styles.navBar} i980 />
 			<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
 				Find and rate cats in your area!
 			</Text>
-			<ViewMap lat={lat} long={long}></ViewMap>
+			<ViewMap
+				lat={lat}
+				long={long}
+				markerLat={marker.markerLat}
+				markerLong={marker.markerLong}
+			></ViewMap>
 			<AppButton
 				text={"Add Cat"}
 				onPress={() => navigation.navigate("Add Cat")}
