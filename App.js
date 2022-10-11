@@ -31,9 +31,18 @@ function HomeScreen({ navigation }) {
 	const [errorMsg, setErrorMsg] = useState(null);
 	const [lat, setLat] = useState(37.78825);
 	const [long, setLong] = useState(-122.4324);
-	const [marker, setMarker] = useState({
-		markerLat: 53.437957,
-		markerLong: -2.213814,
+	// const [marker, setMarker] = useState({
+	// 	markerLat: 53.437957,
+	// 	markerLong: -2.213814,
+	// });
+	const [catInfo, setCatInfo] = useState({
+		id: 1,
+		lat: 53.437957,
+		long: -2.213814,
+		friendliness: 3,
+		cuteness: 5,
+		comments: "Great cat!",
+		photo: "./cat.jpeg"
 	});
 
 	useEffect(() => {
@@ -65,9 +74,6 @@ function HomeScreen({ navigation }) {
 		console.log("no data");
 	}
 
-	console.log(marker);
-	console.log(marker.markerLat)
-	console.log(marker.markerlong);
 
 
 	return (
@@ -79,8 +85,12 @@ function HomeScreen({ navigation }) {
 			<ViewMap
 				lat={lat}
 				long={long}
-				markerLat={marker.markerLat}
-				markerLong={marker.markerLong}
+				markerLat={catInfo.lat}
+				markerLong={catInfo.long}
+				photo ="./cat.jpeg"
+				friendliness={catInfo.friendliness}
+				cuteness={catInfo.cuteness}
+				comments={catInfo.comments}
 			></ViewMap>
 			<AppButton
 				text={"Add Cat"}
