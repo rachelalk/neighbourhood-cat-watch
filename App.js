@@ -21,8 +21,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NewButton from "./Components/NewButton";
 import CatRating from "./Components/Rating";
 import { CLOUDINARY_PRESET, CLOUDINARY_CLOUD } from "@env";
-// import cloudinaryUpload from "cloudinary";
-// import cloudinary from "cloudinary";
+
 
 
 
@@ -142,8 +141,8 @@ function AddCatScreen() {
 			console.log(photo);
 			const data = new FormData();
 			data.append("file", `data:${type};base64,${base64}`);
-			data.append("upload_preset", {CLOUDINARY_PRESET});
-			data.append("cloud_name", {CLOUDINARY_CLOUD});
+			data.append("upload_preset", `${CLOUDINARY_PRESET}`);
+			data.append("cloud_name", `${CLOUDINARY_CLOUD}`);
 			console.log(data);
 			await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
 				method: "post",
