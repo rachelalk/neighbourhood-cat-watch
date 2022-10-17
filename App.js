@@ -19,6 +19,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NewButton from "./Components/NewButton";
 import CatRating from "./Components/Rating";
+import { CLOUDINARY_PRESET, CLOUDINARY_CLOUD } from "@env";
+// import cloudinaryUpload from "cloudinary";
+// import cloudinary from "cloudinary";
 
 
 
@@ -67,12 +70,12 @@ function HomeScreen({ navigation }) {
 	// 	text = JSON.stringify(location);
 	// }
 
-	if (location) {
-		console.log("lat", lat);
-		console.log("long", long);
-	} else {
-		console.log("no data");
-	}
+	// if (location) {
+	// 	console.log("lat", lat);
+	// 	console.log("long", long);
+	// } else {
+	// 	console.log("no location data");
+	// }
 
 
 
@@ -106,6 +109,9 @@ function AddCatScreen() {
 	const [friendliness, setFriendliness] = useState(0)
 	const [cuteness, setCuteness] = useState(0);
 	const [image, setImage] = useState(null);
+	const [photo, setPhoto] = useState(null);
+	const [base64, setBase64] = useState(null);
+	const [type, setType] = useState(null);
 
 		const pickImage = async () => {
 			// No permissions request is necessary for launching the image library
@@ -113,17 +119,51 @@ function AddCatScreen() {
 				mediaTypes: ImagePicker.MediaTypeOptions.All,
 				allowsEditing: true,
 				aspect: [4, 3],
-				quality: 1,
+				quality: 0.2,
+				base64: true,
 			});
 
 			console.log(result);
 
 			if (!result.cancelled) {
 				setImage(result.uri);
+				setBase64(result.base64);
+				setType(result.type);
 			}
 		};
 
 		console.log(image)
+
+
+
+		const cloudinaryUpload = async () => {
+			console.log("submit cat pressed");
+			console.log(photo);
+			const data = new FormData();
+			data.append("file", `data:${type};base64,${base64}`);
+			data.append("upload_preset", {CLOUDINARY_PRESET});
+			data.append("cloud_name", {CLOUDINARY_CLOUD});
+			console.log(data);
+			await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+				method: "post",
+				body: data,
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					console.log("147", data)
+					setPhoto(data.secure_url);
+					console.log("147, photo", photo);
+				})
+				.catch((err) => {
+					console.log("An Error Occured While Uploading");
+				});
+		};
+
+			if (photo) {
+				console.log("photo", photo);
+			} else {
+				console.log("no photo data");
+			}
 
 
 	return (
@@ -152,7 +192,7 @@ function AddCatScreen() {
 				{image && (
 					<Image source={{ uri: image }} style={{ width: 100, height: 100, marginTop: "2%" }} />
 				)}
-				<NewButton text={"Submit Cat"}></NewButton>
+				<NewButton text={"Submit Cat"} onPress={ ()=>cloudinaryUpload(image)}></NewButton>
 			</View>
 
 	);
