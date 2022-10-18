@@ -4,7 +4,9 @@ import { Marker, Callout } from "react-native-maps";
 
 
 
-const ViewMap = ({ lat, long, markerLat, markerLong, photo, friendliness, cuteness, comments }) => {
+const ViewMap = ({
+	catInfo, lat, long
+}) => {
 	return (
 		<View style={styles.container}>
 			<MapView
@@ -16,60 +18,63 @@ const ViewMap = ({ lat, long, markerLat, markerLong, photo, friendliness, cutene
 					longitudeDelta: 0.0121,
 				}}
 			>
-				<Marker coordinate={{ latitude: markerLat, longitude: markerLong }}>
-					<Callout>
-						<View
-							style={{
-								display: "flex",
-								flexDirection: "column",
-								justifyContent: "space-around",
-								width: 300,
-								height: 300,
-								alignItems: "center",
-								backgroundColor: "#E9ECF5",
-							}}
-						>
-							<Text
+				{catInfo.map((cat) => {
+					return (
+					<Marker key={cat.id} coordinate={{ latitude: cat.lat, longitude: cat.long }}>
+						<Callout>
+							<View
 								style={{
 									display: "flex",
+									flexDirection: "column",
+									justifyContent: "space-around",
+									width: 300,
+									height: 300,
+									alignItems: "center",
+									backgroundColor: "#E9ECF5",
 								}}
 							>
-								<Image
-									source={require("./cat.jpeg")}
+								<Text
 									style={{
-										backgroundColor: "#E9ECF5",
 										display: "flex",
-										height: 200,
-										width: 200,
-										resizeMode: "contain",
 									}}
-								></Image>
-							</Text>
+								>
+									 <Image
+										source={{uri: cat.photo_url}}
+										style={{
+											backgroundColor: "#E9ECF5",
+											display: "flex",
+											height: 200,
+											width: 200,
+											resizeMode: "contain",
+										}}
+									></Image> 
+								</Text>
 
-							<Text
-								style={{
-									display: "flex",
-								}}
-							>
-								Friendliness: {friendliness}
-							</Text>
-							<Text
-								style={{
-									display: "flex",
-								}}
-							>
-								Cuteness: {cuteness}
-							</Text>
-							<Text
-								style={{
-									display: "flex",
-								}}
-							>
-								Comments: {comments}
-							</Text>
-						</View>
-					</Callout>
-				</Marker>
+								<Text
+									style={{
+										display: "flex",
+									}}
+								>
+									Friendliness: {cat.friendliness}
+								</Text>
+								<Text
+									style={{
+										display: "flex",
+									}}
+								>
+									Cuteness: {cat.cuteness}
+								</Text>
+								<Text
+									style={{
+										display: "flex",
+									}}
+								>
+									Comments: {cat.comment}
+								</Text>
+							</View>
+						</Callout>
+					</Marker>
+				)})}
 			</MapView>
 		</View>
 	);

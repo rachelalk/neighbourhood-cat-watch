@@ -109,14 +109,15 @@ function HomeScreen({ navigation }) {
 			</Text>
 			
 			<ViewMap
+				catInfo = {catInfo}
 				lat={lat}
 				long={long}
-				markerLat={catInfo.lat}
-				markerLong={catInfo.long}
-				photo="./cat.jpeg"
-				friendliness={catInfo.friendliness}
-				cuteness={catInfo.cuteness}
-				comments={catInfo.comments}
+				// markerLat={catInfo.lat}
+				// markerLong={catInfo.long}
+				// photo="./cat.jpeg"
+				// friendliness={catInfo.friendliness}
+				// cuteness={catInfo.cuteness}
+				// comments={catInfo.comments}
 			></ViewMap>
 			<AppButton
 				text={"Add Cat"}
