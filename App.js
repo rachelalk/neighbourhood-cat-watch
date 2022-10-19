@@ -92,11 +92,11 @@ function HomeScreen({ navigation }) {
 	// 	console.log("no location data");
 	// }
 
-	if (catInfo) {
-		console.log("catInfo", catInfo);
-	} else {
-		console.log("no cat data");
-	}
+	// if (catInfo) {
+	// 	console.log("catInfo", catInfo);
+	// } else {
+	// 	console.log("no cat data");
+	// }
 
 	return (
 		<View style={styles.container}>
@@ -130,16 +130,29 @@ function AddCatScreen({navigation}) {
 	const [friendliness, setFriendliness] = useState(0);
 	const [cuteness, setCuteness] = useState(0);
 	const [image, setImage] = useState(null);
-	const [photo, setPhoto] = useState(null);
+	const [photo, setPhoto] = useState([]);
 	const [base64, setBase64] = useState(null);
 	const [type, setType] = useState(null);
 	const [lat, setLat] = useState(0);
 	const [long, setLong] = useState(0);
 	const [location, setLocation] = useState(null);
 	const [errorMsg, setErrorMsg] = useState(null);
+	const [data, setData] = useState(null);
+	// const [catUpdate, setCatUpdate] = useState({
+	// 	cat_id: 0,
+	// 	lat: lat,
+	// 	long: long,
+	// 	friendliness: friendliness,
+	// 	cuteness: cuteness,
+	// 	comment: comment,
+	// 	photo_url: photo[photo.length - 1],
+	// 	still_there: 0,
+	// 	not_there: 0,
+	// });
 
 
-	let catPhoto
+
+	
 
 	useEffect(() => {
 		(async () => {
@@ -156,11 +169,13 @@ function AddCatScreen({navigation}) {
 		})();
 	}, []);
 
-	if (location) {
-		console.log("lat", lat);
-		console.log("long", long);
+	if (photo) {
+		console.log("photo", photo);
+		console.log("data", data);
+	
 	} else {
-		console.log("no location data");
+		console.log("no photo");
+		
 	}
 
 	const pickImage = async () => {
@@ -212,9 +227,16 @@ function AddCatScreen({navigation}) {
 		
 	// };
 
+	function onPress() {
+		cloudinaryUpload(image);
+		// setTimeout(() => {
+		// 	postCat();
+		// }, 3000);
+
+	}
+
 		const cloudinaryUpload = async () => {
 			console.log("submit cat pressed");
-			console.log(photo);
 			const data = new FormData();
 			data.append("file", `data:${type};base64,${base64}`);
 			data.append("upload_preset", `${CLOUDINARY_PRESET}`);
@@ -229,16 +251,31 @@ function AddCatScreen({navigation}) {
 			)
 				.then((res) => res.json())
 				.then((data) => {
-					setPhoto(data.secure_url);
-					console.log("photo", photo);
+					setPhoto([...photo, data.secure_url]);
+					setData(data);
+					console.log("data.secure_url", data.secure_url);
+					console.log("photo array", photo);
+					postCat(data.secure_url)
 				})
 				.catch((err) => {
 					console.log("An Error Occured While Uploading");
 				});
-				// postCat();
 		};
 
-		const newCat = {
+
+
+
+	function postCat(photo) {
+		
+		console.log("post cat called");
+		console.log("data within postCat", data);
+		console.log("photo in post cat", photo);
+		fetch(`${DB_URL}`, {
+			method: "POST",
+			headers: {
+				"Content-type": "application/json",
+			},
+			body: JSON.stringify({
 			cat_id: 11,
 			lat: lat,
 			long: long,
@@ -248,23 +285,10 @@ function AddCatScreen({navigation}) {
 			photo_url: photo,
 			still_there: 0,
 			not_there: 0,
-		};
-
-		console.log("newCat", newCat);
-
-
-	function postCat() {
-		setTimeout(() => {
-		console.log("post cat called");
-		fetch(`${DB_URL}`, {
-			method: "POST",
-			headers: {
-				"Content-type": "application/json",
-			},
-			body: JSON.stringify(newCat),
+		}),
 		});
 		navigation.navigate("Home");
-}, 1000);
+
 	}
 
 	return (
@@ -297,7 +321,7 @@ function AddCatScreen({navigation}) {
 			)}
 			<NewButton
 				text={"Submit Cat"}
-				onPress={() => cloudinaryUpload(image)}
+				onPress={() => onPress()}
 			></NewButton>
 		</View>
 	);
