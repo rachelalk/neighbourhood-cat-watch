@@ -36,6 +36,7 @@ function HomeScreen({ navigation }) {
 	// });
 	const [catInfo, setCatInfo] = useState([]);
 	const [loading, setLoading] = useState(true);
+
 	// 	{
 	// 	id: 1,
 	// 	lat: 53.437957,
@@ -61,7 +62,7 @@ function HomeScreen({ navigation }) {
 
 	useEffect(() => {
 		getCats();
-	}, []);
+	});
 
 	useEffect(() => {
 		(async () => {
