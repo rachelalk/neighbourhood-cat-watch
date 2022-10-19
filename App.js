@@ -23,6 +23,8 @@ import { CLOUDINARY_PRESET, CLOUDINARY_CLOUD, DB_URL } from "@env";
 
 import * as ImagePicker from "expo-image-picker";
 
+
+
 function HomeScreen({ navigation }) {
 	const [location, setLocation] = useState(null);
 	const [errorMsg, setErrorMsg] = useState(null);
@@ -46,12 +48,10 @@ function HomeScreen({ navigation }) {
 
 	const getCats = async () => {
 		try {
-			const response = await fetch(
-				`${DB_URL}`
-			);
+			const response = await fetch(`${DB_URL}`);
 			const json = await response.json();
 			setCatInfo(json.payload);
-			console.log("json",json);
+			console.log("json", json);
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -62,9 +62,6 @@ function HomeScreen({ navigation }) {
 	useEffect(() => {
 		getCats();
 	}, []);
-	
-
-
 
 	useEffect(() => {
 		(async () => {
@@ -95,11 +92,11 @@ function HomeScreen({ navigation }) {
 	// 	console.log("no location data");
 	// }
 
-		if (catInfo) {
-			console.log("catInfo", catInfo);
-		} else {
-			console.log("no cat data");
-		}
+	if (catInfo) {
+		console.log("catInfo", catInfo);
+	} else {
+		console.log("no cat data");
+	}
 
 	return (
 		<View style={styles.container}>
@@ -107,9 +104,9 @@ function HomeScreen({ navigation }) {
 			<Text style={{ color: "#993955", fontSize: "20%", padding: "5%" }}>
 				Find and rate cats in your area!
 			</Text>
-			
+
 			<ViewMap
-				catInfo = {catInfo}
+				catInfo={catInfo}
 				lat={lat}
 				long={long}
 				// markerLat={catInfo.lat}
@@ -128,7 +125,7 @@ function HomeScreen({ navigation }) {
 	);
 }
 
-function AddCatScreen() {
+function AddCatScreen({navigation}) {
 	const [comment, setComment] = useState("");
 	const [friendliness, setFriendliness] = useState(0);
 	const [cuteness, setCuteness] = useState(0);
@@ -136,6 +133,35 @@ function AddCatScreen() {
 	const [photo, setPhoto] = useState(null);
 	const [base64, setBase64] = useState(null);
 	const [type, setType] = useState(null);
+	const [lat, setLat] = useState(0);
+	const [long, setLong] = useState(0);
+	const [location, setLocation] = useState(null);
+	const [errorMsg, setErrorMsg] = useState(null);
+
+
+	let catPhoto
+
+	useEffect(() => {
+		(async () => {
+			let { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== "granted") {
+				setErrorMsg("Permission to access location was denied");
+				return;
+			}
+
+			let location = await Location.getCurrentPositionAsync({});
+			setLocation(location);
+			setLat(location.coords.latitude);
+			setLong(location.coords.longitude);
+		})();
+	}, []);
+
+	if (location) {
+		console.log("lat", lat);
+		console.log("long", long);
+	} else {
+		console.log("no location data");
+	}
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
@@ -158,33 +184,88 @@ function AddCatScreen() {
 
 	// console.log(image);
 
-	const cloudinaryUpload = async () => {
-		console.log("submit cat pressed");
-		console.log(photo);
-		const data = new FormData();
-		data.append("file", `data:${type};base64,${base64}`);
-		data.append("upload_preset", `${CLOUDINARY_PRESET}`);
-		data.append("cloud_name", `${CLOUDINARY_CLOUD}`);
-		console.log(data);
-		await fetch(
-			`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
-			{
-				method: "post",
-				body: data,
-			}
-		)
-			.then((res) => res.json())
-			.then((data) => {
-				console.log("147", data);
-				setPhoto(data.secure_url);
-				console.log("147, photo", photo);
-			})
-			.catch((err) => {
-				console.log("An Error Occured While Uploading");
-			});
-	};
+	// const cloudinaryUpload = async () => {
+	// 	const data = new FormData();
+	// 	data.append("file", `data:${type};base64,${base64}`);
+	// 	data.append("upload_preset", `${CLOUDINARY_PRESET}`);
+	// 	data.append("cloud_name", `${CLOUDINARY_CLOUD}`);
+	// 	await fetch(
+	// 		`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+	// 		{
+	// 			method: "post",
+	// 			body: data,
+	// 		}
+	// 	)
+	// 		.then((res) => res.json())
+	// 		.then((data) => {
+	// 			setCatPhoto(data.secure_url);
+	// 			console.log("208", data.secure_url);
+	// 			console.log("210", catPhoto);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log("An Error Occured While Uploading");
+	// 		});
+	// 		console.log("215", catPhoto);
+
+	// 			postCat();
+
+		
+	// };
+
+		const cloudinaryUpload = async () => {
+			console.log("submit cat pressed");
+			console.log(photo);
+			const data = new FormData();
+			data.append("file", `data:${type};base64,${base64}`);
+			data.append("upload_preset", `${CLOUDINARY_PRESET}`);
+			data.append("cloud_name", `${CLOUDINARY_CLOUD}`);
+			console.log(data);
+			await fetch(
+				`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+				{
+					method: "post",
+					body: data,
+				}
+			)
+				.then((res) => res.json())
+				.then((data) => {
+					setPhoto(data.secure_url);
+					console.log("photo", photo);
+				})
+				.catch((err) => {
+					console.log("An Error Occured While Uploading");
+				});
+				// postCat();
+		};
+
+		const newCat = {
+			cat_id: 11,
+			lat: lat,
+			long: long,
+			friendliness: friendliness,
+			cuteness: cuteness,
+			comment: comment,
+			photo_url: photo,
+			still_there: 0,
+			not_there: 0,
+		};
+
+		console.log("newCat", newCat);
 
 
+	function postCat() {
+		setTimeout(() => {
+		console.log("post cat called");
+		fetch(`${DB_URL}`, {
+			method: "POST",
+			headers: {
+				"Content-type": "application/json",
+			},
+			body: JSON.stringify(newCat),
+		});
+		navigation.navigate("Home");
+}, 1000);
+	}
 
 	return (
 		<View style={styles.container}>

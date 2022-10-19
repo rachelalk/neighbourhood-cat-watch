@@ -20,7 +20,7 @@ const ViewMap = ({
 			>
 				{catInfo.map((cat) => {
 					return (
-					<Marker key={cat.id} coordinate={{ latitude: cat.lat, longitude: cat.long }}>
+					<Marker key={cat.id} id= {cat.id} coordinate={{ latitude: cat.lat, longitude: cat.long }}>
 						<Callout>
 							<View
 								style={{
